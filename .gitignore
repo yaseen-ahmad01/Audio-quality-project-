@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+audio_projects.db
+uploads/*
+!uploads/.gitkeep

@@ -146,6 +146,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/submissions")
+def submissions_page():
+    return render_template("submissions.html")
+
+
 @app.post("/api/submissions")
 def create_submission():
     name = request.form.get("name", "").strip()
@@ -196,7 +201,7 @@ def create_submission():
 def list_submissions():
     conn = get_db()
     rows = conn.execute("""
-        SELECT id, name, phone, original_filename, created_at,
+        SELECT id, name, phone, original_filename, stored_filename, created_at,
                duration_seconds, sample_rate_hz, bitrate_kbps, loudness_db
         FROM submissions
         ORDER BY id DESC

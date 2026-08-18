@@ -105,6 +105,39 @@ Returns submission records as JSON, including `duration_seconds`,
 `sample_rate_hz`, `sample_rate_khz`, `bitrate_kbps`, and `loudness_db`
 for each row.
 
+## Submissions page
+
+`/submissions` lists every submission with an inline audio player and
+the extracted duration, sample rate, bitrate, and loudness. It's a plain
+HTML/JS page (`templates/submissions.html`, `static/submissions.js`)
+that calls the existing `/api/submissions` endpoint — no new backend
+dependencies.
+
+## Deploy for free (Railway)
+
+Railway was chosen over Render because its default builder (Nixpacks)
+can install `ffmpeg` as a system package with one config file — no
+Dockerfile needed. Render's native Python runtime doesn't allow
+installing system packages like ffmpeg without switching to Docker.
+
+1. Push this project to a GitHub repo (include `Procfile`,
+   `nixpacks.toml`, `.gitignore`, and the updated `requirements.txt` —
+   all already set up).
+2. Go to [railway.app](https://railway.app), sign in with GitHub, and
+   click **New Project → Deploy from GitHub repo**. Pick this repo.
+3. Railway auto-detects it as a Python app via Nixpacks. It reads
+   `nixpacks.toml` and installs `ffmpeg` during the build, then runs
+   the `Procfile`'s `web: gunicorn app:app --bind 0.0.0.0:$PORT`.
+4. Once deployed, open the generated `*.up.railway.app` URL. Test the
+   upload form, then check `/submissions`.
+
+**Important limitation:** Railway's free tier filesystem is ephemeral.
+Every redeploy (and sometimes a restart) wipes `audio_projects.db` and
+the `uploads/` folder. This is fine for demoing that the feature works,
+but not for real data retention — for that you'd need a persistent
+volume (Railway offers one on paid plans) or move to object storage
+(S3-compatible) as noted below.
+
 ## Important production changes
 
 This demo stores files locally. For thousands of workers, use object storage such as S3-compatible storage, Google Cloud Storage, or Azure Blob Storage instead of keeping audio on the web server.
