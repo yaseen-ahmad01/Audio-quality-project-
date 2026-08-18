@@ -9,7 +9,7 @@ import subprocess
 from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "audio_projects.db")
+DB_PATH = r"C:\Users\Dell\Desktop\MergeData\people.db"
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 
 ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "ogg", "webm"}
