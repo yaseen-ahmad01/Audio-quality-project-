@@ -1,33 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gig Audio Submission</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio Submission</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
     <main class="card">
-        <h1>Audio Submission</h1>
-        <p class="subtitle">Enter your details and upload your recording.</p>
+      <h1>Audio Submission</h1>
+      <p class="subtitle">Enter your details and upload your recording.</p>
 
-        <form id="submissionForm">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required>
+      <form id="submissionForm">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Your name"
+          required
+        />
 
-            <label for="phone">Phone number</label>
-            <input id="phone" name="phone" type="tel" placeholder="+91 9876543210" required>
+        <label for="phone">Phone number</label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          placeholder="+91 9876543210"
+          required
+        />
 
-            <label for="audio">Audio file</label>
-            <input id="audio" name="audio" type="file"
-                   accept=".mp3,.wav,.m4a,.ogg,.webm,audio/*" required>
+        <label for="audio">Audio file</label>
+        <input
+          id="audio"
+          name="audio"
+          type="file"
+          accept=".mp3,.wav,.m4a,.ogg,.webm,audio/*"
+          required
+        />
 
-            <button id="submitBtn" type="submit">Submit recording</button>
-        </form>
+        <button id="submitBtn" type="submit">Submit recording</button>
+      </form>
 
-        <div id="status" class="status"></div>
+      <div id="status" class="status"></div>
     </main>
 
     <script src="/static/app.js"></script>
-</body>
+  </body>
 </html>

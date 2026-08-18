@@ -1,4 +1,4 @@
-# Gig Audio Submission App
+# Audio Submission App
 
 A small full-stack application for collecting worker audio recordings.
 
@@ -45,7 +45,7 @@ macOS/Linux:
 
     http://127.0.0.1:5000
 
-The SQLite database `gig_projects.db` is created automatically.
+The SQLite database `audio_projects.db` is created automatically.
 
 ## API
 

@@ -5,7 +5,7 @@ import uuid
 from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "gig_projects.db")
+DB_PATH = os.path.join(BASE_DIR, "audio_projects.db")
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 
 ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "ogg", "webm"}
