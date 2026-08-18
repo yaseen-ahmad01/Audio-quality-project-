@@ -1,6 +1,6 @@
 # Audio Submission App
 
-A small full-stack application for collecting worker audio recordings.
+A  full-stack application for collecting user audio recordings and its qualtiy.
 
 ## Stack
 
@@ -9,10 +9,14 @@ A small full-stack application for collecting worker audio recordings.
 - Database: SQLite
 - Audio storage: local `uploads/` folder
 
+## Stuck Log
+1. how to extract audio quality data. brainstrom with LLM , how to do that , chose 'ffmpeg and ffprobe' over mutagen and librose.
+2. Data Base connection issue faced ,created a sperate file for submission but redict the submisson file to task 1 database
+
 ## Data flow
 
-1. Worker enters name and phone.
-2. Worker selects an audio file.
+1. user enters name and phone.
+2. user selects an audio file.
 3. Browser sends the form using `multipart/form-data`.
 4. Flask validates the request.
 5. Audio is saved in `uploads/`.
@@ -29,10 +33,7 @@ On every upload, the server automatically extracts:
 - **Bitrate** (kbps)
 - **Loudness** (mean volume in dB, via ffmpeg's `volumedetect` filter)
 
-This uses `ffmpeg`/`ffprobe` via `subprocess` calls — no extra Python
-packages required. If ffmpeg isn't installed, submissions still work
-normally; the metadata fields are just left as `null`, and a warning is
-printed to the server log on startup.
+This uses `ffmpeg`/`ffprobe` via `subprocess` calls 
 
 ### Install ffmpeg
 
@@ -40,24 +41,10 @@ Windows (with [Chocolatey](https://chocolatey.org/)):
 
     choco install ffmpeg
 
-macOS (with [Homebrew](https://brew.sh/)):
-
-    brew install ffmpeg
-
-Debian/Ubuntu:
-
-    sudo apt update && sudo apt install ffmpeg
-
 Verify it's on your PATH:
 
     ffmpeg -version
     ffprobe -version
-
-> Note on loudness: `volumedetect` reports mean volume relative to full
-> scale (dBFS), which is simple and dependency-free. If you need
-> broadcast-standard loudness (LUFS, EBU R128), swap the filter for
-> `loudnorm=print_format=json` and parse `input_i` instead — same
-> ffmpeg dependency, just a different filter.
 
 ## Run locally
 
@@ -68,10 +55,6 @@ Windows:
     python -m venv venv
     venv\Scripts\activate
 
-macOS/Linux:
-
-    python3 -m venv venv
-    source venv/bin/activate
 
 ### 2. Install dependencies
 
@@ -112,34 +95,4 @@ the extracted duration, sample rate, bitrate, and loudness. It's a plain
 HTML/JS page (`templates/submissions.html`, `static/submissions.js`)
 that calls the existing `/api/submissions` endpoint — no new backend
 dependencies.
-
-## Deploy for free (Railway)
-
-Railway was chosen over Render because its default builder (Nixpacks)
-can install `ffmpeg` as a system package with one config file — no
-Dockerfile needed. Render's native Python runtime doesn't allow
-installing system packages like ffmpeg without switching to Docker.
-
-1. Push this project to a GitHub repo (include `Procfile`,
-   `nixpacks.toml`, `.gitignore`, and the updated `requirements.txt` —
-   all already set up).
-2. Go to [railway.app](https://railway.app), sign in with GitHub, and
-   click **New Project → Deploy from GitHub repo**. Pick this repo.
-3. Railway auto-detects it as a Python app via Nixpacks. It reads
-   `nixpacks.toml` and installs `ffmpeg` during the build, then runs
-   the `Procfile`'s `web: gunicorn app:app --bind 0.0.0.0:$PORT`.
-4. Once deployed, open the generated `*.up.railway.app` URL. Test the
-   upload form, then check `/submissions`.
-
-**Important limitation:** Railway's free tier filesystem is ephemeral.
-Every redeploy (and sometimes a restart) wipes `audio_projects.db` and
-the `uploads/` folder. This is fine for demoing that the feature works,
-but not for real data retention — for that you'd need a persistent
-volume (Railway offers one on paid plans) or move to object storage
-(S3-compatible) as noted below.
-
-## Important production changes
-
-This demo stores files locally. For thousands of workers, use object storage such as S3-compatible storage, Google Cloud Storage, or Azure Blob Storage instead of keeping audio on the web server.
-
-Also add authentication/admin access, HTTPS, stronger phone validation, rate limiting, malware/content scanning, database backups, and a proper file-storage lifecycle.
+## Deploy on Railway . choose railway bacause its simple to setup and implimnet 
